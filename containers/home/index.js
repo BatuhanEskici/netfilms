@@ -16,7 +16,7 @@ function HomeContainer({ selectedCategory }) {
           title={
             Genres.genres.find(
               (genre) => genre.id.toString() === selectedCategory.id
-            ).name
+            )?.name
           }
           movies={selectedCategory.movies}
         />
