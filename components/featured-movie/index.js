@@ -39,4 +39,4 @@ function FeaturedMovie({ movie = {}, isCompact = true }) {
   );
 }
 
-export { FeaturedMovie };
+export default FeaturedMovie;
