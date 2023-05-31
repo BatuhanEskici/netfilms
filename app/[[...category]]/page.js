@@ -1,26 +1,35 @@
 import React from 'react';
-import HomeContainer from '@/containers/home';
+import { HomeContainer } from '@/containers/home';
 
-import Movies from '@/mocks/movies.json';
-
-async function delay(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
+import {
+  fetchPopularMovies,
+  fetchTopRatedMovies,
+  fetchGenres,
+  fetchMoviesByGenre,
+} from '@/services/movie';
 
 async function HomePage({ params }) {
-  await delay(2000);
+  const pagePromises = [
+    fetchPopularMovies(),
+    fetchTopRatedMovies(),
+    fetchGenres(),
+  ];
 
-  let selectedCategory;
-
-  if (params.category?.length > 0) {
-    selectedCategory = true;
+  if (!!params.category?.length) {
+    pagePromises.push(fetchMoviesByGenre(params.category[0]));
   }
+
+  const [popularMovies, topRatedMovies, genres, selectedCategoryMovies] =
+    await Promise.all(pagePromises);
 
   return (
     <HomeContainer
+      categories={genres}
+      popularMovies={popularMovies}
+      topRatedMovies={topRatedMovies}
       selectedCategory={{
         id: params.category?.[0] ?? '',
-        movies: selectedCategory ? Movies.results.slice(0, 7) : [],
+        movies: selectedCategoryMovies ?? [],
       }}
     />
   );

@@ -19,4 +19,5 @@ function Categories({ categories }) {
   );
 }
 
-export default Categories;
+export { CategoriesLoading } from './loading';
+export { Categories };
